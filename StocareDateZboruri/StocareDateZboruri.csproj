@@ -49,6 +49,10 @@
       <Project>{f715446d-7ff5-4aaa-9313-9e829b233436}</Project>
       <Name>LibrarieZboruri</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NivelStocareDate\NivelStocareDate.csproj">
+      <Project>{7fb686d0-3f81-4414-8620-30d6e915911c}</Project>
+      <Name>NivelStocareDate</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
