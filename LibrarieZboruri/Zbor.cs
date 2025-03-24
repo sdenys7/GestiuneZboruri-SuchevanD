@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibrarieZboruri;
+using System;
 using System.Globalization;
 
 namespace GestiuneZboruri
@@ -11,7 +12,8 @@ namespace GestiuneZboruri
         public string AeroportSosire { get; set; }
         public DateTime DataPlecare { get; set; }
         public DateTime DataSosire { get; set; }
-        public string TipAvion { get; set; } 
+        public TipAvion TipAvion { get; set; }
+
 
         public Zbor() { }
         
@@ -37,7 +39,7 @@ namespace GestiuneZboruri
                 AeroportSosire = tokens[3];
                 DataPlecare = DateTime.ParseExact(tokens[4], "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
                 DataSosire = DateTime.ParseExact(tokens[5], "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
-                TipAvion = tokens[6];
+                TipAvion = (TipAvion)Enum.Parse(typeof(TipAvion), tokens[6]);
             }
             else
             {
@@ -45,22 +47,24 @@ namespace GestiuneZboruri
             }
         }
 
-        public static string GetTipAvionForCompany(string companie)
+        public static TipAvion GetTipAvionForCompany(string companie)
         {
             if (companie.Equals("wizzair", StringComparison.OrdinalIgnoreCase))
-                return "boeing 747-8i";
+                return TipAvion.Boeing747_8i;
             if (companie.Equals("ryanair", StringComparison.OrdinalIgnoreCase))
-                return "boing 737";
+                return TipAvion.Boeing737;
             if (companie.Equals("airfrance", StringComparison.OrdinalIgnoreCase))
-                return "airbus a350";
-            return "necunoscut";
+                return TipAvion.AirbusA350;
+            return TipAvion.Necunoscut;
         }
+
 
         public string ConversieLaSirPentruFisier()
         {
             return $"{IDZbor};{CompanieAeriana};{AeroportPlecare};{AeroportSosire};" +
-                   $"{DataPlecare.ToString("dd.MM.yyyy HH:mm")};{DataSosire.ToString("dd.MM.yyyy HH:mm")};{TipAvion}";
+                   $"{DataPlecare.ToString("dd.MM.yyyy HH:mm")};{DataSosire.ToString("dd.MM.yyyy HH:mm")};{TipAvion.ToString()}";
         }
+
 
         public string Info()
         {

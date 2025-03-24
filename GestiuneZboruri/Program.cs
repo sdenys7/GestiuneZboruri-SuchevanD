@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using NivelStocareDate;
+using LibrarieZboruri;
+
 
 namespace GestiuneZboruri
 {
@@ -75,7 +77,7 @@ namespace GestiuneZboruri
             Console.WriteLine("Introduceti Companie Aeriana");
             string companieAeriana = Console.ReadLine();
 
-            string tipAvion = Zbor.GetTipAvionForCompany(companieAeriana);
+            var TipAvion = Zbor.GetTipAvionForCompany(companieAeriana);
 
             Console.WriteLine("Introduceti Aeroportul Plecare");
             string aeroportPlecare = Console.ReadLine();
@@ -92,7 +94,7 @@ namespace GestiuneZboruri
             DateTime.TryParseExact(Console.ReadLine(), format, provider, System.Globalization.DateTimeStyles.None, out dataSosire);
 
             Zbor zbor = new Zbor(0, companieAeriana, aeroportPlecare, aeroportSosire, dataPlecare, dataSosire);
-            zbor.TipAvion = tipAvion;
+            zbor.TipAvion = TipAvion;
             return zbor;
         }
 
