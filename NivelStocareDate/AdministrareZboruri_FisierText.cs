@@ -66,6 +66,6 @@ namespace NivelStocareDate
                 return tokens.Length >= 1 && int.Parse(tokens[0]) == id;
             });
             File.WriteAllLines(numeFisier, linii);
-        }
+        }       
     }
 }

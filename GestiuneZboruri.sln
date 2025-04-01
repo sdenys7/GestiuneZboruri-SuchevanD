@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibrarieZboruri", "Librarie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NivelStocareDate", "NivelStocareDate\NivelStocareDate.csproj", "{7FB686D0-3F81-4414-8620-30D6E915911C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestiuneZborui_UIWindowsForms", "GestiuneZborui_UIWindowsForms\GestiuneZborui_UIWindowsForms.csproj", "{CFF7CBE9-149F-45C6-B529-376EFBCE1494}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{7FB686D0-3F81-4414-8620-30D6E915911C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FB686D0-3F81-4414-8620-30D6E915911C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FB686D0-3F81-4414-8620-30D6E915911C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFF7CBE9-149F-45C6-B529-376EFBCE1494}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFF7CBE9-149F-45C6-B529-376EFBCE1494}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFF7CBE9-149F-45C6-B529-376EFBCE1494}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFF7CBE9-149F-45C6-B529-376EFBCE1494}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
