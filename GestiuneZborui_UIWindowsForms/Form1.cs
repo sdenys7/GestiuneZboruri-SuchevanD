@@ -1,206 +1,312 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.Configuration;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using GestiuneZboruri;
 using LibrarieZboruri;
 using NivelStocareDate;
-using GestiuneZboruri;
-using System.Configuration;
 
 namespace GestiuneZborui_UIWindowsForms
 {
-    public partial class Form1: Form
+    public partial class Form1 : Form
     {
-        private Label lblIDZbor;
-        private Label lblCompanieAeriana;
-        private Label lblAeroportPlecare;
-        private Label lblAeroportSosire;
-        private Label lblDataPlecare;
-        private Label lblDataSosire;
-        private Label lblTipAvion;
+        private AdministrareZboruri_FisierText gestiuneZboruri;
 
+        private const int NR_MAX_CARACTERE = 50;
 
-        private Label[] lblsIDZbor;
-        private Label[] lblsCompanieAeriana;
-        private Label[] lblsAeroportPlecare;
-        private Label[] lblsAeroportSosire;
-        private Label[] lblsDataPlecare;
-        private Label[] lblsDataSosire;
-        private Label[] lblsTipAvion;
-        private Label[] lblsNume;
-        private const int LATIME_CONTROL = 100;
-        private const int DIMENSIUNE_PAS_Y = 30;
-        private const int DIMENSIUNE_PAS_X = 120;
-        private readonly AdministrareZboruri_FisierText adminZboruri;
+        private Label lblIdZbor, lblCompanieAeriana, lblAeroportPlecare, lblAeroportSosire, lblDataPlecare, lblDataSosire, lblTipAvion;
+        private Label eroareIdZbor, eroareCompanieAeriana, eroareAeroportPlecare, eroareAeroportSosire, eroareDataPlecare, eroareDataSosire, eroareTipAvion;
+        private TextBox txtIdZbor, txtCompanieAeriana, txtAeroportPlecare, txtAeroportSosire, txtDataPlecare, txtDataSosire;
+        private ComboBox cmbTipAvion;
+        private Button buttonAdaugaZbor, buttonRefreshZboruri;
+
+        private const int LATIME_CONTROL = 150;
+        private const int DIMENSIUNE_PAS_Y = 40;
+        private const int DIMENSIUNE_PAS_X = 160;
 
         public Form1()
         {
             InitializeComponent();
 
-            string numeFisier = ConfigurationManager.AppSettings["NumeFisier"];
-            adminZboruri = new
-            AdministrareZboruri_FisierText(numeFisier);
-            int nrZboruri = 0;
-            Zbor[] zboruri = adminZboruri.GetZboruri(out nrZboruri);
+            string numeFisierZboruri = ConfigurationManager.AppSettings["numeFisier"];
+            string locatieFisierSolutie = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+            string caleCompletaFisierZboruri = Path.Combine(locatieFisierSolutie, numeFisierZboruri);
 
-            //setare proprietati
-            this.Size = new Size(500, 200);
+            gestiuneZboruri = new AdministrareZboruri_FisierText(caleCompletaFisierZboruri);
+
+            // Setare proprietăți formular
+            this.Size = new Size(1200, 500);
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(100, 100);
             this.Font = new Font("Arial", 9, FontStyle.Bold);
-            this.ForeColor = Color.LimeGreen;
-            this.Text = "Informatii Zboruri";
+            this.ForeColor = Color.FromArgb(0, 112, 116);
+            this.Text = "Gestiune Zboruri";
 
-            //adaugare control de tip Label pentru 'IDZbor';
-            lblIDZbor = new Label();
-            lblIDZbor.Width = LATIME_CONTROL;
-            lblIDZbor.Text = "IDZbor";
-            lblIDZbor.Left = DIMENSIUNE_PAS_X;
-            lblIDZbor.ForeColor = Color.DarkGreen;
-            this.Controls.Add(lblIDZbor);
+            // Adăugare controale pentru fiecare proprietate
+            AdaugaControale();
 
-            //adaugare control de tip Label pentru 'CompanieAeriana';
-            lblCompanieAeriana = new Label();
-            lblCompanieAeriana.Width = LATIME_CONTROL;
-            lblCompanieAeriana.Text = "CompanieAeriana";
-            lblCompanieAeriana.Left = 2 * DIMENSIUNE_PAS_X;
-            lblCompanieAeriana.ForeColor = Color.DarkGreen;
-            this.Controls.Add(lblCompanieAeriana);
+            // Adăugare butoane
+            buttonAdaugaZbor = new Button
+            {
+                Text = "Adaugă Zbor",
+                Width = LATIME_CONTROL,
+                Location = new Point(0, DIMENSIUNE_PAS_Y)
+            };
+            buttonAdaugaZbor.Click += OnButtonAdaugaZborClicked;
+            this.Controls.Add(buttonAdaugaZbor);
 
-            //adaugare control de tip Label pentru 'AeroportPlecare';
-            lblAeroportPlecare = new Label();
-            lblAeroportPlecare.Width = LATIME_CONTROL;
-            lblAeroportPlecare.Text = "AeroportPlecare";
-            lblAeroportPlecare.Left = 3 * DIMENSIUNE_PAS_X;
-            lblAeroportPlecare.ForeColor = Color.DarkGreen;
-            this.Controls.Add(lblAeroportPlecare);
+            buttonRefreshZboruri = new Button
+            {
+                Text = "Refresh Zboruri",
+                Width = LATIME_CONTROL,
+                Location = new Point(0, 2 * DIMENSIUNE_PAS_Y)
+            };
+            buttonRefreshZboruri.Click += OnButtonRefreshZboruriClicked;
+            this.Controls.Add(buttonRefreshZboruri);
 
-            //adaugare control de tip Label pentru 'AeroportSosire';
-            lblAeroportSosire = new Label();
-            lblAeroportSosire.Width = LATIME_CONTROL;
-            lblAeroportSosire.Text = "AeroportSosire";
-            lblAeroportSosire.Left = 4 * DIMENSIUNE_PAS_X;
-            lblAeroportSosire.ForeColor = Color.DarkGreen;
-            this.Controls.Add(lblAeroportSosire);
-
-            //adaugare control de tip Label pentru 'DataPlecare';
-            lblDataPlecare= new Label();
-            lblDataPlecare.Width = LATIME_CONTROL;
-            lblDataPlecare.Text = "DataPlecare";
-            lblDataPlecare.Left = 5 * DIMENSIUNE_PAS_X;
-            lblDataPlecare.ForeColor = Color.DarkGreen;
-            this.Controls.Add(lblDataPlecare);
-
-            //adaugare control de tip Label pentru 'DataSosire';
-            lblDataSosire = new Label();
-            lblDataSosire.Width = LATIME_CONTROL;
-            lblDataSosire.Text = "DataSosire";
-            lblDataSosire.Left = 6 * DIMENSIUNE_PAS_X;
-            lblDataSosire.ForeColor = Color.DarkGreen;
-            this.Controls.Add(lblDataSosire);
-
-            //adaugare control de tip Label pentru 'TipAvion';
-            lblTipAvion = new Label();
-            lblTipAvion.Width = LATIME_CONTROL;
-            lblTipAvion.Text = "TipAvion";
-            lblTipAvion.Left = 7 * DIMENSIUNE_PAS_X;
-            lblTipAvion.ForeColor = Color.DarkGreen;
-            this.Controls.Add(lblTipAvion);
-
-            Button buton = new Button();
-            buton.Text = "Afisare";
-            buton.Click += Buton_Click;
-            Controls.Add(buton);
+            this.Load += Form1_Load;
         }
 
-        private void Buton_Click(object sender, EventArgs e)
+        private void AdaugaControale()
         {
-            AfiseazaStudenti();
+            // ID Zbor
+            lblIdZbor = new Label { Text = "ID Zbor", Width = LATIME_CONTROL, Left = DIMENSIUNE_PAS_X, ForeColor = Color.FromArgb(3, 76, 83) };
+            txtIdZbor = new TextBox { Width = LATIME_CONTROL, Left = DIMENSIUNE_PAS_X, Top = DIMENSIUNE_PAS_Y };
+            eroareIdZbor = new Label { Width = LATIME_CONTROL, Left = DIMENSIUNE_PAS_X, Top = 2 * DIMENSIUNE_PAS_Y, ForeColor = Color.Red };
+
+            this.Controls.Add(lblIdZbor);
+            this.Controls.Add(txtIdZbor);
+            this.Controls.Add(eroareIdZbor);
+
+            // Companie Aeriană
+            lblCompanieAeriana = new Label { Text = "Companie Aeriană", Width = LATIME_CONTROL, Left = 2 * DIMENSIUNE_PAS_X, ForeColor = Color.FromArgb(3, 76, 83) };
+            txtCompanieAeriana = new TextBox { Width = LATIME_CONTROL, Left = 2 * DIMENSIUNE_PAS_X, Top = DIMENSIUNE_PAS_Y };
+            eroareCompanieAeriana = new Label { Width = LATIME_CONTROL, Left = 2 * DIMENSIUNE_PAS_X, Top = 2 * DIMENSIUNE_PAS_Y, ForeColor = Color.Red };
+
+            this.Controls.Add(lblCompanieAeriana);
+            this.Controls.Add(txtCompanieAeriana);
+            this.Controls.Add(eroareCompanieAeriana);
+
+            // Aeroport Plecare
+            lblAeroportPlecare = new Label { Text = "Aeroport Plecare", Width = LATIME_CONTROL, Left = 3 * DIMENSIUNE_PAS_X, ForeColor = Color.FromArgb(3, 76, 83) };
+            txtAeroportPlecare = new TextBox { Width = LATIME_CONTROL, Left = 3 * DIMENSIUNE_PAS_X, Top = DIMENSIUNE_PAS_Y };
+            eroareAeroportPlecare = new Label { Width = LATIME_CONTROL, Left = 3 * DIMENSIUNE_PAS_X, Top = 2 * DIMENSIUNE_PAS_Y, ForeColor = Color.Red };
+
+            this.Controls.Add(lblAeroportPlecare);
+            this.Controls.Add(txtAeroportPlecare);
+            this.Controls.Add(eroareAeroportPlecare);
+
+            // Aeroport Sosire
+            lblAeroportSosire = new Label { Text = "Aeroport Sosire", Width = LATIME_CONTROL, Left = 4 * DIMENSIUNE_PAS_X, ForeColor = Color.FromArgb(3, 76, 83) };
+            txtAeroportSosire = new TextBox { Width = LATIME_CONTROL, Left = 4 * DIMENSIUNE_PAS_X, Top = DIMENSIUNE_PAS_Y };
+            eroareAeroportSosire = new Label { Width = LATIME_CONTROL, Left = 4 * DIMENSIUNE_PAS_X, Top = 2 * DIMENSIUNE_PAS_Y, ForeColor = Color.Red };
+
+            this.Controls.Add(lblAeroportSosire);
+            this.Controls.Add(txtAeroportSosire);
+            this.Controls.Add(eroareAeroportSosire);
+
+            // Data Plecare
+            lblDataPlecare = new Label { Text = "Data Plecare", Width = LATIME_CONTROL, Left = 5 * DIMENSIUNE_PAS_X, ForeColor = Color.FromArgb(3, 76, 83) };
+            txtDataPlecare = new TextBox { Width = LATIME_CONTROL, Left = 5 * DIMENSIUNE_PAS_X, Top = DIMENSIUNE_PAS_Y };
+            eroareDataPlecare = new Label { Width = LATIME_CONTROL, Left = 5 * DIMENSIUNE_PAS_X, Top = 2 * DIMENSIUNE_PAS_Y, ForeColor = Color.Red };
+
+            this.Controls.Add(lblDataPlecare);
+            this.Controls.Add(txtDataPlecare);
+            this.Controls.Add(eroareDataPlecare);
+
+            // Data Sosire
+            lblDataSosire = new Label { Text = "Data Sosire", Width = LATIME_CONTROL, Left = 6 * DIMENSIUNE_PAS_X, ForeColor = Color.FromArgb(3, 76, 83) };
+            txtDataSosire = new TextBox { Width = LATIME_CONTROL, Left = 6 * DIMENSIUNE_PAS_X, Top = DIMENSIUNE_PAS_Y };
+            eroareDataSosire = new Label { Width = LATIME_CONTROL, Left = 6 * DIMENSIUNE_PAS_X, Top = 2 * DIMENSIUNE_PAS_Y, ForeColor = Color.Red };
+
+            this.Controls.Add(lblDataSosire);
+            this.Controls.Add(txtDataSosire);
+            this.Controls.Add(eroareDataSosire);
+
+            // Tip Avion
+            lblTipAvion = new Label { Text = "Tip Avion", Width = LATIME_CONTROL, Left = 7 * DIMENSIUNE_PAS_X, ForeColor = Color.FromArgb(3, 76, 83) };
+            cmbTipAvion = new ComboBox
+            {
+                Width = LATIME_CONTROL,
+                Left = 7 * DIMENSIUNE_PAS_X,
+                Top = DIMENSIUNE_PAS_Y,
+                DropDownStyle = ComboBoxStyle.DropDownList
+            };
+            cmbTipAvion.Items.AddRange(Enum.GetNames(typeof(TipAvion)));
+            eroareTipAvion = new Label { Width = LATIME_CONTROL, Left = 7 * DIMENSIUNE_PAS_X, Top = 2 * DIMENSIUNE_PAS_Y, ForeColor = Color.Red };
+
+            this.Controls.Add(lblTipAvion);
+            this.Controls.Add(cmbTipAvion);
+            this.Controls.Add(eroareTipAvion);
         }
+
+        private void OnButtonAdaugaZborClicked(object sender, EventArgs e)
+        {
+            eroareIdZbor.Text = "";
+            eroareCompanieAeriana.Text = "";
+            eroareAeroportPlecare.Text = "";
+            eroareAeroportSosire.Text = "";
+            eroareDataPlecare.Text = "";
+            eroareDataSosire.Text = "";
+            eroareTipAvion.Text = "";
+
+            if (!Prevalidare() && !Validare())
+            {
+                int idZbor = int.Parse(txtIdZbor.Text);
+                string companieAeriana = txtCompanieAeriana.Text;
+                string aeroportPlecare = txtAeroportPlecare.Text;
+                string aeroportSosire = txtAeroportSosire.Text;
+                DateTime dataPlecare = DateTime.ParseExact(txtDataPlecare.Text, "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
+                DateTime dataSosire = DateTime.ParseExact(txtDataSosire.Text, "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
+                TipAvion tipAvion = (TipAvion)Enum.Parse(typeof(TipAvion), cmbTipAvion.SelectedItem.ToString());
+
+                Zbor zbor = new Zbor(idZbor, companieAeriana, aeroportPlecare, aeroportSosire, dataPlecare, dataSosire)
+                {
+                    TipAvion = tipAvion
+                };
+                gestiuneZboruri.AddZbor(zbor);
+
+                MessageBox.Show("Zborul a fost adăugat cu succes!");
+            }
+        }
+
+        private void OnButtonRefreshZboruriClicked(object sender, EventArgs e)
+        {
+            AfiseazaZboruri();
+        }
+
+        public bool Prevalidare()
+        {
+            if (string.IsNullOrWhiteSpace(txtIdZbor.Text))
+            {
+                eroareIdZbor.Text = "Nu poate fi gol!";
+                return true;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtCompanieAeriana.Text))
+            {
+                eroareCompanieAeriana.Text = "Nu poate fi gol!";
+                return true;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtAeroportPlecare.Text))
+            {
+                eroareAeroportPlecare.Text = "Nu poate fi gol!";
+                return true;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtAeroportSosire.Text))
+            {
+                eroareAeroportSosire.Text = "Nu poate fi gol!";
+                return true;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtDataPlecare.Text))
+            {
+                eroareDataPlecare.Text = "Nu poate fi gol!";
+                return true;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtDataSosire.Text))
+            {
+                eroareDataSosire.Text = "Nu poate fi gol!";
+                return true;
+            }
+
+            if (cmbTipAvion.SelectedItem == null)
+            {
+                eroareTipAvion.Text = "Selectați un tip de avion!";
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool Validare()
+        {
+            if (!int.TryParse(txtIdZbor.Text, out _))
+            {
+                eroareIdZbor.Text = "Trebuie să fie un număr întreg!";
+                return true;
+            }
+
+            if (txtCompanieAeriana.Text.Length > NR_MAX_CARACTERE)
+            {
+                eroareCompanieAeriana.Text = $"Nr. max > {NR_MAX_CARACTERE} caractere!";
+                return true;
+            }
+
+            if (txtAeroportPlecare.Text.Length > NR_MAX_CARACTERE)
+            {
+                eroareAeroportPlecare.Text = $"Nr. max > {NR_MAX_CARACTERE} caractere!";
+                return true;
+            }
+
+            if (txtAeroportSosire.Text.Length > NR_MAX_CARACTERE)
+            {
+                eroareAeroportSosire.Text = $"Nr. max > {NR_MAX_CARACTERE} caractere!";
+                return true;
+            }
+
+            if (!DateTime.TryParseExact(txtDataPlecare.Text, "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+            {
+                eroareDataPlecare.Text = "Format invalid! (dd.MM.yyyy HH:mm)";
+                return true;
+            }
+
+            if (!DateTime.TryParseExact(txtDataSosire.Text, "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+            {
+                eroareDataSosire.Text = "Format invalid! (dd.MM.yyyy HH:mm)";
+                return true;
+            }
+
+            return false;
+        }
+
+        private void AfiseazaZboruri()
+        {
+            int nrZboruri;
+            Zbor[] zboruri = gestiuneZboruri.GetZboruri(out nrZboruri);
+
+            // Verificare dacă vectorul este null sau gol
+            if (zboruri == null || nrZboruri == 0)
+            {
+                MessageBox.Show("Nu există zboruri de afișat.", "Informație", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            int i = 0;
+            foreach (Zbor zbor in zboruri)
+            {
+                if (zbor == null) continue; // Sari peste zborurile neinițializate
+
+                Label lblId = new Label { Text = zbor.IDZbor.ToString(), Width = LATIME_CONTROL, Left = DIMENSIUNE_PAS_X, Top = (i + 3) * DIMENSIUNE_PAS_Y };
+                Label lblCompanie = new Label { Text = zbor.CompanieAeriana, Width = LATIME_CONTROL, Left = 2 * DIMENSIUNE_PAS_X, Top = (i + 3) * DIMENSIUNE_PAS_Y };
+                Label lblPlecare = new Label { Text = zbor.AeroportPlecare, Width = LATIME_CONTROL, Left = 3 * DIMENSIUNE_PAS_X, Top = (i + 3) * DIMENSIUNE_PAS_Y };
+                Label lblSosire = new Label { Text = zbor.AeroportSosire, Width = LATIME_CONTROL, Left = 4 * DIMENSIUNE_PAS_X, Top = (i + 3) * DIMENSIUNE_PAS_Y };
+                Label lblDataPlecare = new Label { Text = zbor.DataPlecare.ToString("dd.MM.yyyy HH:mm"), Width = LATIME_CONTROL, Left = 5 * DIMENSIUNE_PAS_X, Top = (i + 3) * DIMENSIUNE_PAS_Y };
+                Label lblDataSosire = new Label { Text = zbor.DataSosire.ToString("dd.MM.yyyy HH:mm"), Width = LATIME_CONTROL, Left = 6 * DIMENSIUNE_PAS_X, Top = (i + 3) * DIMENSIUNE_PAS_Y };
+                Label lblTipAvion = new Label { Text = zbor.TipAvion.ToString(), Width = LATIME_CONTROL, Left = 7 * DIMENSIUNE_PAS_X, Top = (i + 3) * DIMENSIUNE_PAS_Y };
+
+                this.Controls.Add(lblId);
+                this.Controls.Add(lblCompanie);
+                this.Controls.Add(lblPlecare);
+                this.Controls.Add(lblSosire);
+                this.Controls.Add(lblDataPlecare);
+                this.Controls.Add(lblDataSosire);
+                this.Controls.Add(lblTipAvion);
+
+                i++;
+            }
+        }
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //AfiseazaStudenti();
-        }
-
-        private void AfiseazaStudenti()
-        {
-            // Obtine zborurile si numarul lor
-            Zbor[] zboruri = adminZboruri.GetZboruri(out int nrZboruri);
-
-            // Initializeaza array-urile pentru etichete
-            lblsIDZbor = new Label[nrZboruri];
-            lblsCompanieAeriana = new Label[nrZboruri];
-            lblsAeroportPlecare = new Label[nrZboruri];
-            lblsAeroportSosire = new Label[nrZboruri];
-            lblsDataPlecare = new Label[nrZboruri];
-            lblsDataSosire = new Label[nrZboruri];
-            lblsTipAvion = new Label[nrZboruri];
-
-            for (int i = 0; i < nrZboruri; i++)
-            {
-                // IDZbor
-                lblsIDZbor[i] = new Label();
-                lblsIDZbor[i].Width = LATIME_CONTROL;
-                lblsIDZbor[i].Text = zboruri[i].IDZbor.ToString();
-                lblsIDZbor[i].Left = DIMENSIUNE_PAS_X;
-                lblsIDZbor[i].Top = DIMENSIUNE_PAS_Y;
-                this.Controls.Add(lblsIDZbor[i]);
-
-                //// CompanieAeriana
-                lblsCompanieAeriana[i] = new Label();
-                lblsCompanieAeriana[i].Width = LATIME_CONTROL;
-                lblsCompanieAeriana[i].Text = zboruri[i].CompanieAeriana;
-                lblsCompanieAeriana[i].Left = 2 * DIMENSIUNE_PAS_X;
-                lblsCompanieAeriana[i].Top = (i + 1) * DIMENSIUNE_PAS_Y;
-                this.Controls.Add(lblsCompanieAeriana[i]);
-
-                // AeroportPlecare
-                lblsAeroportPlecare[i] = new Label();
-                lblsAeroportPlecare[i].Width = LATIME_CONTROL;
-                lblsAeroportPlecare[i].Text = zboruri[i].AeroportPlecare;
-                lblsAeroportPlecare[i].Left = 3 * DIMENSIUNE_PAS_X;
-                lblsAeroportPlecare[i].Top = (i + 1) * DIMENSIUNE_PAS_Y;
-                this.Controls.Add(lblsAeroportPlecare[i]);
-
-                // AeroportSosire
-                lblsAeroportSosire[i] = new Label();
-                lblsAeroportSosire[i].Width = LATIME_CONTROL;
-                lblsAeroportSosire[i].Text = zboruri[i].AeroportSosire;
-                lblsAeroportSosire[i].Left = 4 * DIMENSIUNE_PAS_X;
-                lblsAeroportSosire[i].Top = (i + 1) * DIMENSIUNE_PAS_Y;
-                this.Controls.Add(lblsAeroportSosire[i]);
-
-                // DataPlecare
-                lblsDataPlecare[i] = new Label();
-                lblsDataPlecare[i].Width = LATIME_CONTROL;
-                lblsDataPlecare[i].Text = zboruri[i].DataPlecare.ToString();
-                lblsDataPlecare[i].Left = 5 * DIMENSIUNE_PAS_X;
-                lblsDataPlecare[i].Top = (i + 1) * DIMENSIUNE_PAS_Y;
-                this.Controls.Add(lblsDataPlecare[i]);
-
-                // DataSosire
-                lblsDataSosire[i] = new Label();
-                lblsDataSosire[i].Width = LATIME_CONTROL;
-                lblsDataSosire[i].Text = zboruri[i].DataSosire.ToString();
-                lblsDataSosire[i].Left = 6 * DIMENSIUNE_PAS_X;
-                lblsDataSosire[i].Top = (i + 1) * DIMENSIUNE_PAS_Y;
-                this.Controls.Add(lblsDataSosire[i]);
-
-                // TipAvion
-                lblsTipAvion[i] = new Label();
-                lblsTipAvion[i].Width = LATIME_CONTROL;
-                lblsTipAvion[i].Text = zboruri[i].TipAvion.ToString();
-                lblsTipAvion[i].Left = 7 * DIMENSIUNE_PAS_X;
-                lblsTipAvion[i].Top = (i + 1) * DIMENSIUNE_PAS_Y;
-                this.Controls.Add(lblsTipAvion[i]);
-            }
+            AfiseazaZboruri();
         }
     }
 }
