@@ -67,5 +67,20 @@ namespace NivelStocareDate
             });
             File.WriteAllLines(numeFisier, linii);
         }
+
+        public Zbor GetZbor(int idZbor)
+        {
+            using (StreamReader streamReader = new StreamReader(numeFisier))
+            {
+                string linieFisier;
+                while ((linieFisier = streamReader.ReadLine()) != null)
+                {
+                    Zbor zbor = new Zbor(linieFisier);
+                    if (zbor.IDZbor == idZbor)
+                        return zbor;
+                }
+            }
+            return null;
+        }
     }
 }
