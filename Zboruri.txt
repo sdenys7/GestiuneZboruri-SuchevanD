@@ -1,1 +1,3 @@
-1;AirFrance;Iasi;Paris;14.06.2006 13:00;14.06.2006 13:00;AirbusA350
+1;Tarom;Bucuresti OTP;Londra LHR;15.05.2025 08:30;15.05.2025 10:45;Boeing737
+2;WizzAir;Cluj CLJ;Paris CDG;16.05.2025 12:00;16.05.2025 14:20;AirbusA350
+3;Ryanair;Timisoara TSR;Frankfurt FRA;17.05.2025 09:15;17.05.2025 11:40;Boeing747_8i

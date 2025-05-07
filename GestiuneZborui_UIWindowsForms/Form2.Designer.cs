@@ -50,6 +50,10 @@
             this.lblTipAvion = new System.Windows.Forms.Label();
             this.buttonSalvare = new System.Windows.Forms.Button();
             this.cmbTipAvion = new System.Windows.Forms.ComboBox();
+            this.groupBoxTipZbor = new System.Windows.Forms.GroupBox();
+            this.radioIntern = new System.Windows.Forms.RadioButton();
+            this.radioExtern = new System.Windows.Forms.RadioButton();
+            this.checkBoxZborDirect = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lbIdZbor
@@ -239,11 +243,48 @@
             this.cmbTipAvion.TabIndex = 22;
             this.cmbTipAvion.SelectedIndexChanged += new System.EventHandler(this.cmbTipAvion_SelectedIndexChanged);
             // 
-            // Form2
+            // groupBoxTipZbor
             // 
+            this.groupBoxTipZbor.Controls.Add(this.radioIntern);
+            this.groupBoxTipZbor.Controls.Add(this.radioExtern);
+            this.groupBoxTipZbor.Location = new System.Drawing.Point(188, 360);
+            this.groupBoxTipZbor.Name = "groupBoxTipZbor";
+            this.groupBoxTipZbor.Size = new System.Drawing.Size(200, 50);
+            this.groupBoxTipZbor.TabIndex = 23;
+            this.groupBoxTipZbor.TabStop = false;
+            this.groupBoxTipZbor.Text = "Tip zbor";
+            // radioIntern
+            this.radioIntern.AutoSize = true;
+            this.radioIntern.Location = new System.Drawing.Point(10, 20);
+            this.radioIntern.Name = "radioIntern";
+            this.radioIntern.Size = new System.Drawing.Size(62, 20);
+            this.radioIntern.TabIndex = 0;
+            this.radioIntern.TabStop = true;
+            this.radioIntern.Text = "Intern";
+            this.radioIntern.UseVisualStyleBackColor = true;
+            // radioExtern
+            this.radioExtern.AutoSize = true;
+            this.radioExtern.Location = new System.Drawing.Point(100, 20);
+            this.radioExtern.Name = "radioExtern";
+            this.radioExtern.Size = new System.Drawing.Size(68, 20);
+            this.radioExtern.TabIndex = 1;
+            this.radioExtern.TabStop = true;
+            this.radioExtern.Text = "Extern";
+            this.radioExtern.UseVisualStyleBackColor = true;
+            // checkBoxZborDirect
+            this.checkBoxZborDirect.AutoSize = true;
+            this.checkBoxZborDirect.Location = new System.Drawing.Point(188, 420);
+            this.checkBoxZborDirect.Name = "checkBoxZborDirect";
+            this.checkBoxZborDirect.Size = new System.Drawing.Size(97, 20);
+            this.checkBoxZborDirect.TabIndex = 24;
+            this.checkBoxZborDirect.Text = "Zbor direct";
+            this.checkBoxZborDirect.UseVisualStyleBackColor = true;
+            // Form2
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.groupBoxTipZbor);
+            this.Controls.Add(this.checkBoxZborDirect);
             this.Controls.Add(this.cmbTipAvion);
             this.Controls.Add(this.buttonSalvare);
             this.Controls.Add(this.eroareTipAvion);
@@ -297,5 +338,9 @@
         private System.Windows.Forms.Label lblTipAvion;
         private System.Windows.Forms.Button buttonSalvare;
         private System.Windows.Forms.ComboBox cmbTipAvion;
+        private System.Windows.Forms.GroupBox groupBoxTipZbor;
+        private System.Windows.Forms.RadioButton radioIntern;
+        private System.Windows.Forms.RadioButton radioExtern;
+        private System.Windows.Forms.CheckBox checkBoxZborDirect;
     }
 }

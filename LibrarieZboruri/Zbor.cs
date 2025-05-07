@@ -13,11 +13,13 @@ namespace GestiuneZboruri
         public DateTime DataPlecare { get; set; }
         public DateTime DataSosire { get; set; }
         public TipAvion TipAvion { get; set; }
+        public string TipZbor { get; set; }
+        public bool ZborDirect { get; set; }
 
 
         public Zbor() { }
         
-        public Zbor(int idZbor, string companieAeriana, string aeroportPlecare, string aeroportSosire, DateTime dataPlecare, DateTime dataSosire)
+        public Zbor(int idZbor, string companieAeriana, string aeroportPlecare, string aeroportSosire, DateTime dataPlecare, DateTime dataSosire, string tipZbor = "Intern", bool zborDirect = false)
         {
             IDZbor = idZbor;
             CompanieAeriana = companieAeriana;
@@ -26,12 +28,14 @@ namespace GestiuneZboruri
             DataPlecare = dataPlecare;
             DataSosire = dataSosire;
             TipAvion = GetTipAvionForCompany(companieAeriana);
+            TipZbor = tipZbor;
+            ZborDirect = zborDirect;
         }
 
         public Zbor(string linie)
         {
             string[] tokens = linie.Split(';');
-            if (tokens.Length == 7)
+            if (tokens.Length == 9)
             {
                 IDZbor = int.Parse(tokens[0]);
                 CompanieAeriana = tokens[1];
@@ -40,6 +44,20 @@ namespace GestiuneZboruri
                 DataPlecare = DateTime.ParseExact(tokens[4], "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
                 DataSosire = DateTime.ParseExact(tokens[5], "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
                 TipAvion = (TipAvion)Enum.Parse(typeof(TipAvion), tokens[6]);
+                TipZbor = tokens[7];
+                ZborDirect = bool.Parse(tokens[8]);
+            }
+            else if (tokens.Length == 7) // compatibilitate veche
+            {
+                IDZbor = int.Parse(tokens[0]);
+                CompanieAeriana = tokens[1];
+                AeroportPlecare = tokens[2];
+                AeroportSosire = tokens[3];
+                DataPlecare = DateTime.ParseExact(tokens[4], "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
+                DataSosire = DateTime.ParseExact(tokens[5], "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
+                TipAvion = (TipAvion)Enum.Parse(typeof(TipAvion), tokens[6]);
+                TipZbor = "Intern";
+                ZborDirect = false;
             }
             else
             {
@@ -62,7 +80,7 @@ namespace GestiuneZboruri
         public string ConversieLaSirPentruFisier()
         {
             return $"{IDZbor};{CompanieAeriana};{AeroportPlecare};{AeroportSosire};" +
-                   $"{DataPlecare.ToString("dd.MM.yyyy HH:mm")};{DataSosire.ToString("dd.MM.yyyy HH:mm")};{TipAvion.ToString()}";
+                   $"{DataPlecare.ToString("dd.MM.yyyy HH:mm")};{DataSosire.ToString("dd.MM.yyyy HH:mm")};{TipAvion.ToString()};{TipZbor};{ZborDirect}";
         }
 
 
@@ -70,7 +88,7 @@ namespace GestiuneZboruri
         {
             return $"ID Zbor: {IDZbor}, Companie: {CompanieAeriana}, Plecare: {AeroportPlecare}, " +
                    $"Sosire: {AeroportSosire}, Data Plecare: {DataPlecare.ToString("dd.MM.yyyy HH:mm")}, " +
-                   $"Data Sosire: {DataSosire.ToString("dd.MM.yyyy HH:mm")}, Tip Avion: {TipAvion}";
+                   $"Data Sosire: {DataSosire.ToString("dd.MM.yyyy HH:mm")}, Tip Avion: {TipAvion}, Tip Zbor: {TipZbor}, Zbor direct: {(ZborDirect ? "Da" : "Nu")}";
         }
     }
 }

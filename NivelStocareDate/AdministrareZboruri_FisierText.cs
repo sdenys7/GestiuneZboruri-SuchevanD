@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Collections.Generic;
 using GestiuneZboruri;
 
 namespace NivelStocareDate
 {
     public class AdministrareZboruri_FisierText
     {
-        private const int NR_MAX_ZBORURI = 50;
         private string numeFisier;
 
         public AdministrareZboruri_FisierText(string numeFisier)
@@ -25,20 +25,18 @@ namespace NivelStocareDate
             }
         }
 
-        public Zbor[] GetZboruri(out int nrZboruri)
+        public List<Zbor> GetZboruri()
         {
-            Zbor[] zboruri = new Zbor[NR_MAX_ZBORURI];
-            nrZboruri = 0;
+            List<Zbor> zboruri = new List<Zbor>();
 
             using (StreamReader streamReader = new StreamReader(numeFisier))
             {
                 string linieFisier;
                 while ((linieFisier = streamReader.ReadLine()) != null)
                 {
-                    zboruri[nrZboruri++] = new Zbor(linieFisier);
+                    zboruri.Add(new Zbor(linieFisier));
                 }
             }
-
             return zboruri;
         }
 

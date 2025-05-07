@@ -1,5 +1,6 @@
 ﻿using GestiuneZboruri;
 using System;
+using System.Collections.Generic;   
 namespace NivelStocareDate
 {
 

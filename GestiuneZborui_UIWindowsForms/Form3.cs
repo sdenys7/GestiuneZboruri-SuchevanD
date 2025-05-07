@@ -21,9 +21,42 @@ namespace GestiuneZborui_UIWindowsForms
 
             gestiuneZboruri = new AdministrareZboruri_FisierText(caleCompletaFisierZboruri);
 
-            this.Font = new Font("Arial", 9, FontStyle.Bold);
-            this.ForeColor = Color.MediumSlateBlue;
-            this.Text = "Căutare Zboruri";
+            // Modern Monaco-inspired design
+            this.Size = new Size(800, 400);
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.BackColor = Color.FromArgb(26, 27, 46); // Dark navy blue
+            this.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+            this.ForeColor = Color.FromArgb(232, 232, 232); // Light gray
+            this.Text = "Search Flights";
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+
+            // Style all controls
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button)
+                {
+                    Button button = (Button)control;
+                    button.BackColor = Color.FromArgb(0, 180, 216); // Teal
+                    button.ForeColor = Color.White;
+                    button.FlatStyle = FlatStyle.Flat;
+                    button.FlatAppearance.BorderSize = 0;
+                    button.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+                    button.Size = new Size(120, 35);
+                    button.Cursor = Cursors.Hand;
+                }
+                else if (control is TextBox)
+                {
+                    control.BackColor = Color.FromArgb(45, 45, 65);
+                    control.ForeColor = Color.FromArgb(232, 232, 232);
+                    control.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+                }
+                else if (control is Label)
+                {
+                    control.ForeColor = Color.FromArgb(232, 232, 232);
+                    control.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+                }
+            }
         }
 
         private void buttonCauta_Click(object sender, EventArgs e)

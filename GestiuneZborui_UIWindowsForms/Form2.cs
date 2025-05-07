@@ -34,6 +34,43 @@ namespace GestiuneZborui_UIWindowsForms
             string caleCompletaFisierZboruri = Path.Combine(locatieFisierSolutie, numeFisierZboruri);
 
             gestiuneZboruri = new AdministrareZboruri_FisierText(caleCompletaFisierZboruri);
+
+            // Modern Monaco-inspired design
+            this.Size = new Size(800, 600);
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.BackColor = Color.FromArgb(26, 27, 46); // Dark navy blue
+            this.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+            this.ForeColor = Color.FromArgb(232, 232, 232); // Light gray
+            this.Text = "Add New Flight";
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+
+            // Style all controls
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button)
+                {
+                    Button button = (Button)control;
+                    button.BackColor = Color.FromArgb(0, 180, 216); // Teal
+                    button.ForeColor = Color.White;
+                    button.FlatStyle = FlatStyle.Flat;
+                    button.FlatAppearance.BorderSize = 0;
+                    button.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+                    button.Size = new Size(120, 35);
+                    button.Cursor = Cursors.Hand;
+                }
+                else if (control is TextBox || control is ComboBox)
+                {
+                    control.BackColor = Color.FromArgb(45, 45, 65);
+                    control.ForeColor = Color.FromArgb(232, 232, 232);
+                    control.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+                }
+                else if (control is Label)
+                {
+                    control.ForeColor = Color.FromArgb(232, 232, 232);
+                    control.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+                }
+            }
         }
 
 
@@ -70,13 +107,17 @@ namespace GestiuneZborui_UIWindowsForms
 
                 TipAvion tipAvion = (TipAvion)Enum.Parse(typeof(TipAvion), cmbTipAvion.SelectedItem.ToString());
 
-                Zbor zbor = new Zbor(idZbor, companieAeriana, aeroportPlecare, aeroportSosire, dataPlecare, dataSosire)
+                // Citire RadioButton și CheckBox
+                string tipZbor = radioIntern.Checked ? "Intern" : (radioExtern.Checked ? "Extern" : "Nespecificat");
+                bool zborDirect = checkBoxZborDirect.Checked;
+
+                Zbor zbor = new Zbor(idZbor, companieAeriana, aeroportPlecare, aeroportSosire, dataPlecare, dataSosire, tipZbor, zborDirect)
                 {
                     TipAvion = tipAvion
                 };
                 gestiuneZboruri.AddZbor(zbor);
 
-                MessageBox.Show("Zborul a fost adăugat cu succes!");
+                MessageBox.Show($"Zborul a fost adăugat cu succes!\nTip zbor: {tipZbor}\nZbor direct: {(zborDirect ? "Da" : "Nu")}");
             }
         }
 
