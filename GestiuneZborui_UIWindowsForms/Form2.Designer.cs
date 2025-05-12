@@ -54,12 +54,13 @@
             this.radioIntern = new System.Windows.Forms.RadioButton();
             this.radioExtern = new System.Windows.Forms.RadioButton();
             this.checkBoxZborDirect = new System.Windows.Forms.CheckBox();
+            this.groupBoxTipZbor.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbIdZbor
             // 
             this.lbIdZbor.AutoSize = true;
-            this.lbIdZbor.Location = new System.Drawing.Point(136, 28);
+            this.lbIdZbor.Location = new System.Drawing.Point(285, 28);
             this.lbIdZbor.Name = "lbIdZbor";
             this.lbIdZbor.Size = new System.Drawing.Size(46, 16);
             this.lbIdZbor.TabIndex = 0;
@@ -67,7 +68,7 @@
             // 
             // txtIdZbor
             // 
-            this.txtIdZbor.Location = new System.Drawing.Point(188, 22);
+            this.txtIdZbor.Location = new System.Drawing.Point(385, 27);
             this.txtIdZbor.Name = "txtIdZbor";
             this.txtIdZbor.Size = new System.Drawing.Size(100, 22);
             this.txtIdZbor.TabIndex = 1;
@@ -75,24 +76,22 @@
             // eroareIdZbor
             // 
             this.eroareIdZbor.AutoSize = true;
-            this.eroareIdZbor.Location = new System.Drawing.Point(324, 33);
+            this.eroareIdZbor.Location = new System.Drawing.Point(521, 33);
             this.eroareIdZbor.Name = "eroareIdZbor";
-            this.eroareIdZbor.Size = new System.Drawing.Size(14, 16);
+            this.eroareIdZbor.Size = new System.Drawing.Size(0, 16);
             this.eroareIdZbor.TabIndex = 2;
-            this.eroareIdZbor.Text = "1";
             // 
             // eroareCompanieAeriana
             // 
             this.eroareCompanieAeriana.AutoSize = true;
-            this.eroareCompanieAeriana.Location = new System.Drawing.Point(324, 80);
+            this.eroareCompanieAeriana.Location = new System.Drawing.Point(521, 80);
             this.eroareCompanieAeriana.Name = "eroareCompanieAeriana";
-            this.eroareCompanieAeriana.Size = new System.Drawing.Size(14, 16);
+            this.eroareCompanieAeriana.Size = new System.Drawing.Size(0, 16);
             this.eroareCompanieAeriana.TabIndex = 5;
-            this.eroareCompanieAeriana.Text = "1";
             // 
             // txtCompanieAeriana
             // 
-            this.txtCompanieAeriana.Location = new System.Drawing.Point(188, 75);
+            this.txtCompanieAeriana.Location = new System.Drawing.Point(385, 75);
             this.txtCompanieAeriana.Name = "txtCompanieAeriana";
             this.txtCompanieAeriana.Size = new System.Drawing.Size(100, 22);
             this.txtCompanieAeriana.TabIndex = 4;
@@ -100,7 +99,7 @@
             // lblCompanieAeriana
             // 
             this.lblCompanieAeriana.AutoSize = true;
-            this.lblCompanieAeriana.Location = new System.Drawing.Point(66, 75);
+            this.lblCompanieAeriana.Location = new System.Drawing.Point(215, 75);
             this.lblCompanieAeriana.Name = "lblCompanieAeriana";
             this.lblCompanieAeriana.Size = new System.Drawing.Size(116, 16);
             this.lblCompanieAeriana.TabIndex = 3;
@@ -109,15 +108,14 @@
             // eroareAeroportPlecare
             // 
             this.eroareAeroportPlecare.AutoSize = true;
-            this.eroareAeroportPlecare.Location = new System.Drawing.Point(324, 128);
+            this.eroareAeroportPlecare.Location = new System.Drawing.Point(521, 128);
             this.eroareAeroportPlecare.Name = "eroareAeroportPlecare";
-            this.eroareAeroportPlecare.Size = new System.Drawing.Size(14, 16);
+            this.eroareAeroportPlecare.Size = new System.Drawing.Size(0, 16);
             this.eroareAeroportPlecare.TabIndex = 8;
-            this.eroareAeroportPlecare.Text = "1";
             // 
             // txtAeroportPlecare
             // 
-            this.txtAeroportPlecare.Location = new System.Drawing.Point(188, 123);
+            this.txtAeroportPlecare.Location = new System.Drawing.Point(385, 123);
             this.txtAeroportPlecare.Name = "txtAeroportPlecare";
             this.txtAeroportPlecare.Size = new System.Drawing.Size(100, 22);
             this.txtAeroportPlecare.TabIndex = 7;
@@ -125,7 +123,7 @@
             // lblAeroportPlecare
             // 
             this.lblAeroportPlecare.AutoSize = true;
-            this.lblAeroportPlecare.Location = new System.Drawing.Point(76, 129);
+            this.lblAeroportPlecare.Location = new System.Drawing.Point(225, 129);
             this.lblAeroportPlecare.Name = "lblAeroportPlecare";
             this.lblAeroportPlecare.Size = new System.Drawing.Size(106, 16);
             this.lblAeroportPlecare.TabIndex = 6;
@@ -134,15 +132,14 @@
             // eroareAeroportSosire
             // 
             this.eroareAeroportSosire.AutoSize = true;
-            this.eroareAeroportSosire.Location = new System.Drawing.Point(324, 176);
+            this.eroareAeroportSosire.Location = new System.Drawing.Point(521, 176);
             this.eroareAeroportSosire.Name = "eroareAeroportSosire";
-            this.eroareAeroportSosire.Size = new System.Drawing.Size(14, 16);
+            this.eroareAeroportSosire.Size = new System.Drawing.Size(0, 16);
             this.eroareAeroportSosire.TabIndex = 11;
-            this.eroareAeroportSosire.Text = "1";
             // 
             // txtAeroportSosire
             // 
-            this.txtAeroportSosire.Location = new System.Drawing.Point(188, 171);
+            this.txtAeroportSosire.Location = new System.Drawing.Point(385, 171);
             this.txtAeroportSosire.Name = "txtAeroportSosire";
             this.txtAeroportSosire.Size = new System.Drawing.Size(100, 22);
             this.txtAeroportSosire.TabIndex = 10;
@@ -150,7 +147,7 @@
             // lblAeroportSosire
             // 
             this.lblAeroportSosire.AutoSize = true;
-            this.lblAeroportSosire.Location = new System.Drawing.Point(84, 174);
+            this.lblAeroportSosire.Location = new System.Drawing.Point(233, 174);
             this.lblAeroportSosire.Name = "lblAeroportSosire";
             this.lblAeroportSosire.Size = new System.Drawing.Size(98, 16);
             this.lblAeroportSosire.TabIndex = 9;
@@ -159,15 +156,14 @@
             // eroareDataPlecare
             // 
             this.eroareDataPlecare.AutoSize = true;
-            this.eroareDataPlecare.Location = new System.Drawing.Point(324, 222);
+            this.eroareDataPlecare.Location = new System.Drawing.Point(521, 222);
             this.eroareDataPlecare.Name = "eroareDataPlecare";
-            this.eroareDataPlecare.Size = new System.Drawing.Size(14, 16);
+            this.eroareDataPlecare.Size = new System.Drawing.Size(0, 16);
             this.eroareDataPlecare.TabIndex = 14;
-            this.eroareDataPlecare.Text = "1";
             // 
             // txtDataPlecare
             // 
-            this.txtDataPlecare.Location = new System.Drawing.Point(188, 217);
+            this.txtDataPlecare.Location = new System.Drawing.Point(385, 217);
             this.txtDataPlecare.Name = "txtDataPlecare";
             this.txtDataPlecare.Size = new System.Drawing.Size(100, 22);
             this.txtDataPlecare.TabIndex = 13;
@@ -175,7 +171,7 @@
             // lblDataPlecare
             // 
             this.lblDataPlecare.AutoSize = true;
-            this.lblDataPlecare.Location = new System.Drawing.Point(99, 220);
+            this.lblDataPlecare.Location = new System.Drawing.Point(248, 220);
             this.lblDataPlecare.Name = "lblDataPlecare";
             this.lblDataPlecare.Size = new System.Drawing.Size(83, 16);
             this.lblDataPlecare.TabIndex = 12;
@@ -184,15 +180,14 @@
             // eroareDataSosire
             // 
             this.eroareDataSosire.AutoSize = true;
-            this.eroareDataSosire.Location = new System.Drawing.Point(324, 277);
+            this.eroareDataSosire.Location = new System.Drawing.Point(521, 277);
             this.eroareDataSosire.Name = "eroareDataSosire";
-            this.eroareDataSosire.Size = new System.Drawing.Size(14, 16);
+            this.eroareDataSosire.Size = new System.Drawing.Size(0, 16);
             this.eroareDataSosire.TabIndex = 17;
-            this.eroareDataSosire.Text = "1";
             // 
             // txtDataSosire
             // 
-            this.txtDataSosire.Location = new System.Drawing.Point(188, 272);
+            this.txtDataSosire.Location = new System.Drawing.Point(385, 272);
             this.txtDataSosire.Name = "txtDataSosire";
             this.txtDataSosire.Size = new System.Drawing.Size(100, 22);
             this.txtDataSosire.TabIndex = 16;
@@ -200,7 +195,7 @@
             // lblDataSosire
             // 
             this.lblDataSosire.AutoSize = true;
-            this.lblDataSosire.Location = new System.Drawing.Point(107, 272);
+            this.lblDataSosire.Location = new System.Drawing.Point(256, 272);
             this.lblDataSosire.Name = "lblDataSosire";
             this.lblDataSosire.Size = new System.Drawing.Size(75, 16);
             this.lblDataSosire.TabIndex = 15;
@@ -209,16 +204,15 @@
             // eroareTipAvion
             // 
             this.eroareTipAvion.AutoSize = true;
-            this.eroareTipAvion.Location = new System.Drawing.Point(324, 325);
+            this.eroareTipAvion.Location = new System.Drawing.Point(521, 325);
             this.eroareTipAvion.Name = "eroareTipAvion";
-            this.eroareTipAvion.Size = new System.Drawing.Size(14, 16);
+            this.eroareTipAvion.Size = new System.Drawing.Size(0, 16);
             this.eroareTipAvion.TabIndex = 20;
-            this.eroareTipAvion.Text = "1";
             // 
             // lblTipAvion
             // 
             this.lblTipAvion.AutoSize = true;
-            this.lblTipAvion.Location = new System.Drawing.Point(121, 320);
+            this.lblTipAvion.Location = new System.Drawing.Point(270, 320);
             this.lblTipAvion.Name = "lblTipAvion";
             this.lblTipAvion.Size = new System.Drawing.Size(61, 16);
             this.lblTipAvion.TabIndex = 18;
@@ -226,7 +220,7 @@
             // 
             // buttonSalvare
             // 
-            this.buttonSalvare.Location = new System.Drawing.Point(225, 387);
+            this.buttonSalvare.Location = new System.Drawing.Point(228, 438);
             this.buttonSalvare.Name = "buttonSalvare";
             this.buttonSalvare.Size = new System.Drawing.Size(75, 23);
             this.buttonSalvare.TabIndex = 21;
@@ -237,7 +231,7 @@
             // cmbTipAvion
             // 
             this.cmbTipAvion.FormattingEnabled = true;
-            this.cmbTipAvion.Location = new System.Drawing.Point(188, 317);
+            this.cmbTipAvion.Location = new System.Drawing.Point(385, 317);
             this.cmbTipAvion.Name = "cmbTipAvion";
             this.cmbTipAvion.Size = new System.Drawing.Size(121, 24);
             this.cmbTipAvion.TabIndex = 22;
@@ -247,42 +241,50 @@
             // 
             this.groupBoxTipZbor.Controls.Add(this.radioIntern);
             this.groupBoxTipZbor.Controls.Add(this.radioExtern);
-            this.groupBoxTipZbor.Location = new System.Drawing.Point(188, 360);
+            this.groupBoxTipZbor.Location = new System.Drawing.Point(259, 369);
             this.groupBoxTipZbor.Name = "groupBoxTipZbor";
-            this.groupBoxTipZbor.Size = new System.Drawing.Size(200, 50);
+            this.groupBoxTipZbor.Size = new System.Drawing.Size(189, 63);
             this.groupBoxTipZbor.TabIndex = 23;
             this.groupBoxTipZbor.TabStop = false;
             this.groupBoxTipZbor.Text = "Tip zbor";
+            // 
             // radioIntern
+            // 
             this.radioIntern.AutoSize = true;
             this.radioIntern.Location = new System.Drawing.Point(10, 20);
             this.radioIntern.Name = "radioIntern";
-            this.radioIntern.Size = new System.Drawing.Size(62, 20);
+            this.radioIntern.Size = new System.Drawing.Size(60, 20);
             this.radioIntern.TabIndex = 0;
             this.radioIntern.TabStop = true;
             this.radioIntern.Text = "Intern";
             this.radioIntern.UseVisualStyleBackColor = true;
+            // 
             // radioExtern
+            // 
             this.radioExtern.AutoSize = true;
             this.radioExtern.Location = new System.Drawing.Point(100, 20);
             this.radioExtern.Name = "radioExtern";
-            this.radioExtern.Size = new System.Drawing.Size(68, 20);
+            this.radioExtern.Size = new System.Drawing.Size(65, 20);
             this.radioExtern.TabIndex = 1;
             this.radioExtern.TabStop = true;
             this.radioExtern.Text = "Extern";
             this.radioExtern.UseVisualStyleBackColor = true;
+            // 
             // checkBoxZborDirect
+            // 
             this.checkBoxZborDirect.AutoSize = true;
-            this.checkBoxZborDirect.Location = new System.Drawing.Point(188, 420);
+            this.checkBoxZborDirect.Location = new System.Drawing.Point(392, 441);
             this.checkBoxZborDirect.Name = "checkBoxZborDirect";
-            this.checkBoxZborDirect.Size = new System.Drawing.Size(97, 20);
+            this.checkBoxZborDirect.Size = new System.Drawing.Size(93, 20);
             this.checkBoxZborDirect.TabIndex = 24;
             this.checkBoxZborDirect.Text = "Zbor direct";
             this.checkBoxZborDirect.UseVisualStyleBackColor = true;
+            // 
             // Form2
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(700, 535);
             this.Controls.Add(this.groupBoxTipZbor);
             this.Controls.Add(this.checkBoxZborDirect);
             this.Controls.Add(this.cmbTipAvion);
@@ -309,6 +311,9 @@
             this.Controls.Add(this.lbIdZbor);
             this.Name = "Form2";
             this.Text = "Form2";
+            this.Load += new System.EventHandler(this.Form2_Load);
+            this.groupBoxTipZbor.ResumeLayout(false);
+            this.groupBoxTipZbor.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

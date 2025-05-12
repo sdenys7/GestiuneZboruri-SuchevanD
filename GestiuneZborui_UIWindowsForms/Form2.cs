@@ -11,8 +11,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using NivelStocareDate;
-using LibrarieZboruri;
 using System.Configuration;
 using System.IO;
 
@@ -23,6 +21,9 @@ namespace GestiuneZborui_UIWindowsForms
         private AdministrareZboruri_FisierText gestiuneZboruri;
 
         private const int NR_MAX_CARACTERE = 50;
+        private bool isEditMode = false;
+        private int editingFlightId = -1;
+
         public Form2()
         {
             InitializeComponent();
@@ -38,10 +39,10 @@ namespace GestiuneZborui_UIWindowsForms
             // Modern Monaco-inspired design
             this.Size = new Size(800, 600);
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.BackColor = Color.FromArgb(26, 27, 46); // Dark navy blue
+            this.BackColor = Color.White;
             this.Font = new Font("Segoe UI", 10, FontStyle.Regular);
-            this.ForeColor = Color.FromArgb(232, 232, 232); // Light gray
-            this.Text = "Add New Flight";
+            this.ForeColor = Color.FromArgb(25, 25, 112); // Dark blue text
+            this.Text = "Chernivtsy-Airport - Adauga Zbor Nou";
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
 
@@ -51,28 +52,70 @@ namespace GestiuneZborui_UIWindowsForms
                 if (control is Button)
                 {
                     Button button = (Button)control;
-                    button.BackColor = Color.FromArgb(0, 180, 216); // Teal
+                    button.BackColor = Color.FromArgb(25, 25, 112); // Dark blue
                     button.ForeColor = Color.White;
                     button.FlatStyle = FlatStyle.Flat;
-                    button.FlatAppearance.BorderSize = 0;
+                    button.FlatAppearance.BorderColor = Color.FromArgb(220, 20, 60); // Crimson
+                    button.FlatAppearance.BorderSize = 1;
                     button.Font = new Font("Segoe UI", 10, FontStyle.Regular);
                     button.Size = new Size(120, 35);
                     button.Cursor = Cursors.Hand;
                 }
                 else if (control is TextBox || control is ComboBox)
                 {
-                    control.BackColor = Color.FromArgb(45, 45, 65);
-                    control.ForeColor = Color.FromArgb(232, 232, 232);
+                    control.BackColor = Color.White;
+                    control.ForeColor = Color.FromArgb(25, 25, 112);
                     control.Font = new Font("Segoe UI", 10, FontStyle.Regular);
                 }
                 else if (control is Label)
                 {
-                    control.ForeColor = Color.FromArgb(232, 232, 232);
+                    control.ForeColor = Color.FromArgb(25, 25, 112);
+                    control.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+                }
+                else if (control is GroupBox)
+                {
+                    control.ForeColor = Color.FromArgb(25, 25, 112);
+                    control.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+                }
+                else if (control is RadioButton)
+                {
+                    control.ForeColor = Color.FromArgb(25, 25, 112);
+                    control.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+                }
+                else if (control is CheckBox)
+                {
+                    control.ForeColor = Color.FromArgb(25, 25, 112);
                     control.Font = new Font("Segoe UI", 10, FontStyle.Regular);
                 }
             }
         }
 
+        public void LoadFlightForEdit(int flightId)
+        {
+            isEditMode = true;
+            editingFlightId = flightId;
+            this.Text = "Chernivtsy-Airport - Modifica Zbor";
+
+            Zbor zbor = gestiuneZboruri.GetZbor(flightId);
+            if (zbor != null)
+            {
+                txtIdZbor.Text = zbor.IDZbor.ToString();
+                txtIdZbor.Enabled = false; // ID cannot be changed
+                txtCompanieAeriana.Text = zbor.CompanieAeriana;
+                txtAeroportPlecare.Text = zbor.AeroportPlecare;
+                txtAeroportSosire.Text = zbor.AeroportSosire;
+                txtDataPlecare.Text = zbor.DataPlecare.ToString("dd.MM.yyyy HH:mm");
+                txtDataSosire.Text = zbor.DataSosire.ToString("dd.MM.yyyy HH:mm");
+                cmbTipAvion.SelectedItem = zbor.TipAvion.ToString();
+                
+                if (zbor.TipZbor == "Intern")
+                    radioIntern.Checked = true;
+                else
+                    radioExtern.Checked = true;
+
+                checkBoxZborDirect.Checked = zbor.ZborDirect;
+            }
+        }
 
         private void buttonSalvare_Click(object sender, EventArgs e)
         {
@@ -86,7 +129,7 @@ namespace GestiuneZborui_UIWindowsForms
 
             if (gestiuneZboruri == null)
             {
-                MessageBox.Show("Eroare: Obiectul gestiuneZboruri nu a fost inițializat.", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Eroare: Obiectul gestiuneZboruri nu a fost initializat.", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -101,13 +144,12 @@ namespace GestiuneZborui_UIWindowsForms
 
                 if (cmbTipAvion.SelectedItem == null)
                 {
-                    eroareTipAvion.Text = "Selectați un tip de avion!";
+                    eroareTipAvion.Text = "Selectati un tip de avion!";
                     return;
                 }
 
                 TipAvion tipAvion = (TipAvion)Enum.Parse(typeof(TipAvion), cmbTipAvion.SelectedItem.ToString());
 
-                // Citire RadioButton și CheckBox
                 string tipZbor = radioIntern.Checked ? "Intern" : (radioExtern.Checked ? "Extern" : "Nespecificat");
                 bool zborDirect = checkBoxZborDirect.Checked;
 
@@ -115,12 +157,21 @@ namespace GestiuneZborui_UIWindowsForms
                 {
                     TipAvion = tipAvion
                 };
-                gestiuneZboruri.AddZbor(zbor);
 
-                MessageBox.Show($"Zborul a fost adăugat cu succes!\nTip zbor: {tipZbor}\nZbor direct: {(zborDirect ? "Da" : "Nu")}");
+                if (isEditMode)
+                {
+                    gestiuneZboruri.UpdateZbor(editingFlightId, zbor);
+                    MessageBox.Show("Zborul a fost modificat cu succes!");
+                }
+                else
+                {
+                    gestiuneZboruri.AddZbor(zbor);
+                    MessageBox.Show("Zborul a fost adaugat cu succes!");
+                }
+
+                this.Close();
             }
         }
-
 
         public bool Prevalidare()
         {
@@ -162,7 +213,7 @@ namespace GestiuneZborui_UIWindowsForms
 
             if (cmbTipAvion.SelectedItem == null)
             {
-                eroareTipAvion.Text = "Selectați un tip de avion!";
+                eroareTipAvion.Text = "Selectati un tip de avion!";
                 return true;
             }
 
@@ -173,7 +224,7 @@ namespace GestiuneZborui_UIWindowsForms
         {
             if (!int.TryParse(txtIdZbor.Text, out _))
             {
-                eroareIdZbor.Text = "Trebuie să fie un număr întreg!";
+                eroareIdZbor.Text = "Trebuie sa fie un numar intreg!";
                 return true;
             }
 
@@ -212,6 +263,17 @@ namespace GestiuneZborui_UIWindowsForms
 
         private void cmbTipAvion_SelectedIndexChanged(object sender, EventArgs e)
         {
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+        }
+
+        public void HighlightIdField(int idToHighlight)
+        {
+            txtIdZbor.Text = idToHighlight.ToString();
+            txtIdZbor.BackColor = Color.FromArgb(255, 248, 220); // Light yellow highlight
+            txtIdZbor.Select();
         }
     }
 }

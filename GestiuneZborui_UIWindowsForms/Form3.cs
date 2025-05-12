@@ -4,6 +4,7 @@ using System;
 using System.Configuration;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace GestiuneZborui_UIWindowsForms
@@ -24,10 +25,10 @@ namespace GestiuneZborui_UIWindowsForms
             // Modern Monaco-inspired design
             this.Size = new Size(800, 400);
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.BackColor = Color.FromArgb(26, 27, 46); // Dark navy blue
+            this.BackColor = Color.White;
             this.Font = new Font("Segoe UI", 10, FontStyle.Regular);
-            this.ForeColor = Color.FromArgb(232, 232, 232); // Light gray
-            this.Text = "Search Flights";
+            this.ForeColor = Color.FromArgb(25, 25, 112); // Dark blue text
+            this.Text = "Chernivtsy-Airport - Cauta Zboruri";
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
 
@@ -37,23 +38,24 @@ namespace GestiuneZborui_UIWindowsForms
                 if (control is Button)
                 {
                     Button button = (Button)control;
-                    button.BackColor = Color.FromArgb(0, 180, 216); // Teal
+                    button.BackColor = Color.FromArgb(25, 25, 112); // Dark blue
                     button.ForeColor = Color.White;
                     button.FlatStyle = FlatStyle.Flat;
-                    button.FlatAppearance.BorderSize = 0;
+                    button.FlatAppearance.BorderColor = Color.FromArgb(220, 20, 60); // Crimson
+                    button.FlatAppearance.BorderSize = 1;
                     button.Font = new Font("Segoe UI", 10, FontStyle.Regular);
                     button.Size = new Size(120, 35);
                     button.Cursor = Cursors.Hand;
                 }
                 else if (control is TextBox)
                 {
-                    control.BackColor = Color.FromArgb(45, 45, 65);
-                    control.ForeColor = Color.FromArgb(232, 232, 232);
+                    control.BackColor = Color.White;
+                    control.ForeColor = Color.FromArgb(25, 25, 112);
                     control.Font = new Font("Segoe UI", 10, FontStyle.Regular);
                 }
                 else if (control is Label)
                 {
-                    control.ForeColor = Color.FromArgb(232, 232, 232);
+                    control.ForeColor = Color.FromArgb(25, 25, 112);
                     control.Font = new Font("Segoe UI", 10, FontStyle.Regular);
                 }
             }
@@ -65,7 +67,7 @@ namespace GestiuneZborui_UIWindowsForms
 
             if (string.IsNullOrWhiteSpace(idZborText) || !int.TryParse(idZborText, out int idZbor))
             {
-                MessageBox.Show("Introduceți un ID valid!", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Introduceti un ID valid!", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -73,19 +75,18 @@ namespace GestiuneZborui_UIWindowsForms
 
             if (zborGasit != null)
             {
-                MessageBox.Show($"Zbor găsit:\n\n" +
-                                $"ID Zbor: {zborGasit.IDZbor}\n" +
-                                $"Companie Aeriană: {zborGasit.CompanieAeriana}\n" +
-                                $"Aeroport Plecare: {zborGasit.AeroportPlecare}\n" +
-                                $"Aeroport Sosire: {zborGasit.AeroportSosire}\n" +
-                                $"Data Plecare: {zborGasit.DataPlecare:dd.MM.yyyy HH:mm}\n" +
-                                $"Data Sosire: {zborGasit.DataSosire:dd.MM.yyyy HH:mm}\n" +
-                                $"Tip Avion: {zborGasit.TipAvion}",
-                                "Zbor găsit", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Find Form1 instance and highlight the flight
+                Form1 mainForm = Application.OpenForms.OfType<Form1>().FirstOrDefault();
+                if (mainForm != null)
+                {
+                    mainForm.HighlightFlight(idZbor);
+                    mainForm.Show();
+                    this.Hide();
+                }
             }
             else
             {
-                MessageBox.Show("Zborul cu ID-ul specificat nu a fost găsit.", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Zborul cu ID-ul specificat nu a fost gasit.", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

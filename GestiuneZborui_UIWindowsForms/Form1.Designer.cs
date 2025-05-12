@@ -31,6 +31,7 @@
             this.buttonAdauga = new System.Windows.Forms.Button();
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.buttonCautare = new System.Windows.Forms.Button();
+            this.buttonModifica = new System.Windows.Forms.Button();
             this.dataGridAfisare = new System.Windows.Forms.DataGridView();
             this.comboBoxCompanie = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridAfisare)).BeginInit();
@@ -66,6 +67,16 @@
             this.buttonCautare.UseVisualStyleBackColor = true;
             this.buttonCautare.Click += new System.EventHandler(this.buttonCautare_Click);
             // 
+            // buttonModifica
+            // 
+            this.buttonModifica.Location = new System.Drawing.Point(12, 287);
+            this.buttonModifica.Name = "buttonModifica";
+            this.buttonModifica.Size = new System.Drawing.Size(75, 23);
+            this.buttonModifica.TabIndex = 6;
+            this.buttonModifica.Text = "Modifica";
+            this.buttonModifica.UseVisualStyleBackColor = true;
+            this.buttonModifica.Click += new System.EventHandler(this.buttonModifica_Click);
+            // 
             // dataGridAfisare
             // 
             this.dataGridAfisare.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -73,6 +84,7 @@
             this.dataGridAfisare.Name = "dataGridAfisare";
             this.dataGridAfisare.RowHeadersWidth = 80;
             this.dataGridAfisare.RowTemplate.Height = 40;
+            this.dataGridAfisare.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridAfisare.Size = new System.Drawing.Size(1634, 571);
             this.dataGridAfisare.TabIndex = 10;
             // 
@@ -80,7 +92,7 @@
             // 
             this.comboBoxCompanie.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxCompanie.FormattingEnabled = true;
-            this.comboBoxCompanie.Location = new System.Drawing.Point(12, 300);
+            this.comboBoxCompanie.Location = new System.Drawing.Point(12, 316);
             this.comboBoxCompanie.Name = "comboBoxCompanie";
             this.comboBoxCompanie.Size = new System.Drawing.Size(140, 24);
             this.comboBoxCompanie.TabIndex = 20;
@@ -92,6 +104,7 @@
             this.ClientSize = new System.Drawing.Size(1422, 595);
             this.Controls.Add(this.comboBoxCompanie);
             this.Controls.Add(this.dataGridAfisare);
+            this.Controls.Add(this.buttonModifica);
             this.Controls.Add(this.buttonCautare);
             this.Controls.Add(this.buttonRefresh);
             this.Controls.Add(this.buttonAdauga);
@@ -107,6 +120,7 @@
         private System.Windows.Forms.Button buttonAdauga;
         private System.Windows.Forms.Button buttonRefresh;
         private System.Windows.Forms.Button buttonCautare;
+        private System.Windows.Forms.Button buttonModifica;
         private System.Windows.Forms.DataGridView dataGridAfisare;
         private System.Windows.Forms.ComboBox comboBoxCompanie;
     }

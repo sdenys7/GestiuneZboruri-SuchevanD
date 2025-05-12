@@ -18,7 +18,19 @@ namespace GestiuneZborui_UIWindowsForms
 
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
-            AfiseazaZboruri();
+            // Reload the data from file
+            string numeFisierZboruri = ConfigurationManager.AppSettings["numeFisier"];
+            string locatieFisierSolutie = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+            string caleCompletaFisierZboruri = Path.Combine(locatieFisierSolutie, numeFisierZboruri);
+
+            gestiuneZboruri = new AdministrareZboruri_FisierText(caleCompletaFisierZboruri);
+            
+            // Refresh the DataGridView
+            List<Zbor> zboruri = gestiuneZboruri.GetZboruri();
+            AfiseazaDataGrid(zboruri);
+            
+            // Refresh the company ComboBox
+            PopuleazaComboBoxCompanie();
         }
 
         private void buttonAdauga_Click(object sender, EventArgs e)
@@ -45,8 +57,8 @@ namespace GestiuneZborui_UIWindowsForms
             this.StartPosition = FormStartPosition.CenterScreen;
             this.BackColor = Color.White;
             this.Font = new Font("Segoe UI", 11, FontStyle.Regular);
-            this.ForeColor = Color.FromArgb(58, 61, 70);
-            this.Text = "Monaco Airport - Flight Management System";
+            this.ForeColor = Color.FromArgb(25, 25, 112);
+            this.Text = "Chernivtsy-Airport - Sistem Gestiune Zboruri";
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
 
@@ -58,14 +70,14 @@ namespace GestiuneZborui_UIWindowsForms
                     dgv.BorderStyle = BorderStyle.None;
                     dgv.GridColor = Color.FromArgb(230, 236, 240);
                     dgv.DefaultCellStyle.BackColor = Color.White;
-                    dgv.DefaultCellStyle.ForeColor = Color.FromArgb(58, 61, 70);
+                    dgv.DefaultCellStyle.ForeColor = Color.FromArgb(25, 25, 112);
                     dgv.DefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Regular);
-                    dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(246, 250, 252);
-                    dgv.DefaultCellStyle.SelectionForeColor = Color.FromArgb(58, 61, 70);
+                    dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(220, 20, 60);
+                    dgv.DefaultCellStyle.SelectionForeColor = Color.White;
                     dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(246, 250, 252);
                     dgv.RowTemplate.Height = 40;
-                    dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.White;
-                    dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(58, 61, 70);
+                    dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(25, 25, 112);
+                    dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
                     dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
                     dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
                     dgv.EnableHeadersVisualStyles = false;
@@ -77,16 +89,23 @@ namespace GestiuneZborui_UIWindowsForms
                 }
                 else if (control is Button btn)
                 {
-                    btn.BackColor = Color.White;
-                    btn.ForeColor = Color.FromArgb(33, 150, 243);
+                    btn.BackColor = Color.FromArgb(25, 25, 112);
+                    btn.ForeColor = Color.White;
                     btn.FlatStyle = FlatStyle.Flat;
-                    btn.FlatAppearance.BorderColor = Color.FromArgb(33, 150, 243);
+                    btn.FlatAppearance.BorderColor = Color.FromArgb(220, 20, 60);
                     btn.FlatAppearance.BorderSize = 1;
                     btn.Font = new Font("Segoe UI", 10, FontStyle.Regular);
                     btn.Size = new Size(120, 36);
                     btn.Cursor = Cursors.Hand;
                     btn.Region = System.Drawing.Region.FromHrgn(
                         NativeMethods.CreateRoundRectRgn(0, 0, btn.Width, btn.Height, 16, 16));
+                }
+                else if (control is ComboBox cmb)
+                {
+                    cmb.BackColor = Color.White;
+                    cmb.ForeColor = Color.FromArgb(25, 25, 112);
+                    cmb.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+                    cmb.FlatStyle = FlatStyle.Flat;
                 }
             }
 
@@ -122,7 +141,7 @@ namespace GestiuneZborui_UIWindowsForms
             int nrZboruri = zboruri.Count;
             if (zboruri == null || nrZboruri == 0)
             {
-                MessageBox.Show("Nu există zboruri de afișat.", "Informație", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Nu exista zboruri de afisat.", "Informatie", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -178,6 +197,35 @@ namespace GestiuneZborui_UIWindowsForms
                 ZborDirect = s.ZborDirect ? "Da" : "Nu"
             }).ToList();
             dataGridAfisare.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+        }
+
+        public void HighlightFlight(int flightId)
+        {
+            foreach (DataGridViewRow row in dataGridAfisare.Rows)
+            {
+                if (row.Cells["IDZbor"].Value.ToString() == flightId.ToString())
+                {
+                    row.Selected = true;
+                    dataGridAfisare.FirstDisplayedScrollingRowIndex = row.Index;
+                    break;
+                }
+            }
+        }
+
+        private void buttonModifica_Click(object sender, EventArgs e)
+        {
+            if (dataGridAfisare.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Va rugam sa selectati un zbor pentru modificare!", "Atentie", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var selectedRow = dataGridAfisare.SelectedRows[0];
+            int idZbor = Convert.ToInt32(selectedRow.Cells["IDZbor"].Value);
+            
+            Form2 form2 = new Form2();
+            form2.LoadFlightForEdit(idZbor);
+            form2.Show();
         }
     }
 
